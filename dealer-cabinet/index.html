@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Кабинет партнёра - прототип</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f4f6f8;--card:#fff;--ink:#1d2733;--mute:#6b7785;--line:#e3e8ee;--acc:#0f6fde;--acc2:#e8f1fd;--ok:#1a9a5a;--warn:#c77700}
+*{box-sizing:border-box}body{margin:0;font:14px/1.45 Inter,system-ui,sans-serif;background:var(--bg);color:var(--ink)}
+header{background:#13202e;color:#fff;display:flex;align-items:center;gap:24px;padding:14px 28px}
+header b{font-size:16px;letter-spacing:.3px}header .sp{flex:1}
+.role{display:flex;gap:4px;background:#22303f;border-radius:8px;padding:3px}
+.role button{border:0;background:transparent;color:#b8c4d0;padding:6px 12px;border-radius:6px;cursor:pointer;font:inherit}
+.role button.on{background:#fff;color:#13202e;font-weight:600}
+.user{color:#b8c4d0;font-size:13px}
+.wrap{display:grid;grid-template-columns:200px minmax(0,1fr) 280px;gap:16px;padding:18px 20px;align-items:start}.wrap>*{min-width:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px}
+.tree{padding:14px}.tree h4{margin:0 0 10px;font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:var(--mute)}
+.tree a{display:flex;justify-content:space-between;padding:7px 10px;border-radius:7px;color:var(--ink);text-decoration:none;cursor:pointer}
+.tree a.on{background:var(--acc2);color:var(--acc);font-weight:600}.tree a small{color:var(--mute)}
+.tree a.sub{padding-left:22px;font-size:13px}
+.tools{display:flex;gap:10px;padding:14px;border-bottom:1px solid var(--line);flex-wrap:wrap;align-items:center}
+.tools input,.tools select{border:1px solid var(--line);border-radius:8px;padding:8px 10px;font:inherit}
+.tools input{flex:1;min-width:180px}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
+th{font-size:12px;color:var(--mute);font-weight:600;cursor:pointer;white-space:nowrap;background:#fafbfc}
+td.n,th.n{text-align:right;white-space:nowrap}
+.ph{width:44px;height:44px;border-radius:8px;display:grid;place-items:center;font-weight:700;color:#fff}
+.art{color:var(--mute);font-size:12px}a.nm{color:var(--ink);font-weight:500;text-decoration:none}td:nth-child(3){min-width:230px}
+.st{font-size:12px;padding:2px 8px;border-radius:20px;white-space:nowrap}.st.in{background:#e6f6ee;color:var(--ok)}.st.wait{background:#fff3e0;color:var(--warn)}
+.disc{color:var(--acc);font-weight:600}.pp{font-weight:700}
+.hid{font-size:11px;background:#f1e8ff;color:#7b3fc4;padding:1px 6px;border-radius:4px;margin-left:6px}
+.qty{width:54px;border:1px solid var(--line);border-radius:6px;padding:5px;text-align:center}
+.mgr{display:none}.role-m .mgr,.role-a .mgr{display:table-cell}
+.adm{display:none}.role-a .adm{display:block}
+.cart{padding:16px;position:sticky;top:20px}.cart h3{margin:0 0 12px;font-size:16px}
+.ci b{white-space:nowrap}.ci{display:flex;justify-content:space-between;gap:8px;min-width:0;padding:8px 0;border-bottom:1px dashed var(--line);font-size:13px}
+.tot{margin:12px 0;font-size:13px}.tot div{display:flex;justify-content:space-between;gap:8px;padding:3px 0}.tot b{font-size:16px}
+.btn{display:block;width:100%;border:0;border-radius:9px;padding:11px;font:inherit;font-weight:600;cursor:pointer;margin-top:8px}
+.b1{background:var(--acc);color:#fff}.b2{background:var(--acc2);color:var(--acc)}
+.mode{display:flex;flex-wrap:wrap;gap:6px 12px;margin:10px 0;font-size:12px}.mode label{display:flex;gap:5px;align-items:center}
+.empty{color:var(--mute);font-size:13px;padding:10px 0}
+.note{font-size:12px;color:var(--mute);padding:10px 14px}
+.adminbox{padding:14px;margin-top:20px}.adminbox h4{margin:0 0 8px}
+#kp{display:none;position:fixed;inset:0;background:rgba(19,32,46,.6);overflow:auto;padding:30px}
+.sheet{background:#fff;max-width:820px;margin:0 auto;padding:44px 52px;border-radius:6px}
+.sheet h1{font-size:26px;margin:0}.sheet .meta{color:var(--mute);margin:6px 0 24px}
+.sheet table td,.sheet table th{font-size:12.5px}
+.close{float:right;cursor:pointer;border:0;background:var(--acc2);color:var(--acc);padding:8px 12px;border-radius:8px;font-weight:600}
+.log{font-size:12px;color:var(--mute);max-height:120px;overflow:auto}
+</style>
+</head>
+<body class="role-p">
+<header>
+  <b>Кабинет партнёра</b>
+  <div class="role" id="roles">
+    <button data-r="p" class="on">Партнёр</button><button data-r="m">Менеджер</button><button data-r="a">Администратор</button>
+  </div>
+  <span class="sp"></span><span class="user" id="who">partner@example.ru</span>
+</header>
+
+<div class="wrap">
+  <div>
+    <div class="card tree" id="tree"><h4>Группы каталога</h4></div>
+    <div class="card adminbox adm">
+      <h4>Администратор</h4>
+      <div class="note" style="padding:0 0 8px">Скидка на раздел наследуется вложенными разделами, скидка на товар её перекрывает.</div>
+      <label>Скидка на «<span id="admGroup"></span>», %: <input id="admDisc" type="number" min="0" max="60" style="width:60px"></label>
+      <h4 style="margin-top:14px">Журнал действий</h4>
+      <div class="log" id="log"></div>
+    </div>
+  </div>
+
+  <div class="card" style="overflow-x:auto">
+    <div class="tools">
+      <input id="q" placeholder="Поиск по названию или артикулу">
+      <select id="stock"><option value="">Любое наличие</option><option value="in">В наличии</option><option value="wait">Под заказ</option></select>
+      <button class="btn b2" style="width:auto;margin:0;padding:8px 14px" onclick="excel('price')">⬇ Прайс в Excel</button>
+    </div>
+    <table>
+      <thead><tr>
+        <th></th><th></th><th data-s="name">Товар</th><th>Наличие</th>
+        <th class="n" data-s="retail">Розница</th><th class="n" data-s="disc">Скидка</th>
+        <th class="n" data-s="pp">Цена партнёра</th><th class="n">без НДС</th><th class="n mgr">Остаток</th><th class="n">Кол-во</th>
+      </tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <div class="note">Демо-данные. В рабочей версии каталог, цены и остатки берутся из инфоблоков Битрикс напрямую (обмен с 1С уже есть), всё на /local, ядро не трогаем.</div>
+  </div>
+
+  <div class="card cart">
+    <h3>Подборка <span id="cnt" style="color:var(--mute);font-weight:400"></span></h3>
+    <div id="items"></div>
+    <div class="tot" id="tot"></div>
+    <div class="mode">
+      <label><input type="radio" name="m" value="pp" checked> С ценой партнёра</label>
+      <label><input type="radio" name="m" value="r"> Только розница</label>
+    </div>
+    <button class="btn b1" onclick="kp()">Сформировать КП</button>
+    <button class="btn b2" onclick="excel('sel')">⬇ Подборка в Excel</button>
+    <div class="note" style="padding:8px 0 0">Подборка хранится на сервере - откроется с любого компьютера.</div>
+  </div>
+</div>
+
+<div id="kp"><div class="sheet" id="sheet"></div></div>
+
+<script>
+const GROUPS=[{id:"l",name:"Светильники",sub:[{id:"l1",name:"Офисные"},{id:"l2",name:"Промышленные"}]},
+              {id:"c",name:"Кабель и провод",sub:[{id:"c1",name:"Силовой"},{id:"c2",name:"Слаботочный"}]},
+              {id:"a",name:"Автоматика",sub:[{id:"a1",name:"Автоматы"},{id:"a2",name:"Реле и контакторы"}]}];
+const COLORS={l:"#2f7de1",c:"#c0663a",a:"#3a9a7b"};
+const P=[["l1","LT-6036","Панель светодиодная 595×595 36 Вт",2890,"in",120,"4000K, IP40, 3600 лм"],
+["l1","LT-1218","Светильник линейный 1200 мм 18 Вт",1640,"in",340,"4000K, IP20, 1800 лм"],
+["l2","LH-100","Светильник промышленный Highbay 100 Вт",8450,"wait",0,"5000K, IP65, 13000 лм",true],
+["l2","LS-050","Прожектор 50 Вт",2190,"in",95,"6500K, IP66, 5000 лм"],
+["c1","VV-325","Кабель ВВГнг(А)-LS 3×2,5, бухта 100 м",9800,"in",42,"медь, ГОСТ 31996"],
+["c1","VV-515","Кабель ВВГнг(А)-LS 5×1,5, бухта 100 м",11200,"wait",0,"медь, ГОСТ 31996"],
+["c2","UT-5E","Кабель витая пара U/UTP cat.5e, 305 м",7600,"in",18,"медь, внутренний"],
+["a1","AV-C16","Автомат 1P C16 4,5 кА",310,"in",900,"кривая C, DIN"],
+["a1","AV-3C32","Автомат 3P C32 6 кА",1980,"in",160,"кривая C, DIN"],
+["a2","KM-25","Контактор модульный 25 А 2НО",2450,"wait",0,"катушка 230 В",true],
+["a2","RN-63","Реле напряжения 63 А",3150,"in",64,"защита от перенапряжения"]]
+ .map((p,i)=>({id:i,g:p[0],art:p[1],name:p[2],retail:p[3],stock:p[4],left:p[5],ch:p[6],hidden:!!p[7]}));
+let disc={l:12,l1:15,c:8,a:10,a2:14}, prodDisc={0:18}, role="p", group="", sort="", dir=1, sel={}, logs=[], kpNo=128;
+const fmt=n=>Math.round(n).toLocaleString("ru-RU")+" ₽";
+const grp=g=>g[0];
+const dOf=p=>prodDisc[p.id]??disc[p.g]??disc[grp(p.g)]??0;
+const pp=p=>p.retail*(1-dOf(p)/100);
+function log(t){logs.unshift(new Date().toLocaleTimeString("ru-RU")+" - "+t);document.getElementById("log").innerHTML=logs.slice(0,30).join("<br>")}
+function tree(){let h='<h4>Группы каталога</h4><a class="'+(group?'':'on')+'" onclick="setG(\'\')">Все товары <small>'+P.length+'</small></a>';
+ GROUPS.forEach(g=>{h+=`<a class="${group==g.id?'on':''}" onclick="setG('${g.id}')">${g.name} <small>${P.filter(p=>grp(p.g)==g.id).length}</small></a>`;
+  g.sub.forEach(s=>h+=`<a class="sub ${group==s.id?'on':''}" onclick="setG('${s.id}')">${s.name} <small>−${disc[s.id]??disc[g.id]??0}%</small></a>`)});
+ document.getElementById("tree").innerHTML=h;
+ const gn=group?(GROUPS.flatMap(g=>[g,...g.sub]).find(x=>x.id==group)||{}).name:"Все товары";
+ document.getElementById("admGroup").textContent=gn;document.getElementById("admDisc").value=group?(disc[group]??""):""}
+function setG(g){group=g;draw();tree()}
+function draw(){const q=document.getElementById("q").value.toLowerCase(),st=document.getElementById("stock").value;
+ let L=P.filter(p=>(!group||p.g==group||grp(p.g)==group)&&(!q||(p.name+p.art).toLowerCase().includes(q))&&(!st||p.stock==st));
+ if(sort)L.sort((a,b)=>{const v={name:x=>x.name,retail:x=>x.retail,disc:dOf,pp}[sort];return (v(a)>v(b)?1:-1)*dir});
+ document.getElementById("rows").innerHTML=L.map(p=>`<tr>
+  <td><input type="checkbox" ${sel[p.id]?'checked':''} onchange="tog(${p.id},this.checked)"></td>
+  <td><div class="ph" style="background:${COLORS[grp(p.g)]}">${p.art.slice(0,2)}</div></td>
+  <td><a class="nm" href="#" onclick="return false">${p.name}</a>${p.hidden?'<span class="hid">только в кабинете</span>':''}<div class="art">${p.art} · ${p.ch}</div></td>
+  <td><span class="st ${p.stock}">${p.stock=='in'?'В наличии':'Под заказ, 10-14 дн.'}</span></td>
+  <td class="n">${fmt(p.retail)}</td><td class="n disc">−${dOf(p)}%</td>
+  <td class="n pp">${fmt(pp(p))}</td><td class="n">${fmt(pp(p)/1.2)}</td><td class="n mgr">${p.left} шт.</td>
+  <td class="n"><input class="qty" type="number" min="1" value="${sel[p.id]||1}" onchange="qty(${p.id},this.value)"></td></tr>`).join("");
+ cart()}
+function tog(id,on){if(on){sel[id]=sel[id]||1;log("в подборку: "+P[id].art)}else{delete sel[id];log("из подборки: "+P[id].art)}draw()}
+function qty(id,v){if(sel[id]){sel[id]=Math.max(1,+v);cart()}}
+function cart(){const ids=Object.keys(sel);document.getElementById("cnt").textContent=ids.length?"· "+ids.length:"";
+ if(!ids.length){document.getElementById("items").innerHTML='<div class="empty">Отметьте товары галочкой - они соберутся здесь.</div>';document.getElementById("tot").innerHTML="";return}
+ let r=0,s=0;document.getElementById("items").innerHTML=ids.map(i=>{const p=P[i],k=sel[i];r+=p.retail*k;s+=pp(p)*k;
+  return `<div class="ci"><span>${p.name}<br><span class="art">${k} шт. × ${fmt(pp(p))}</span></span><b>${fmt(pp(p)*k)}</b></div>`}).join("");
+ document.getElementById("tot").innerHTML=`<div><span>Розница</span><span>${fmt(r)}</span></div><div><span>Скидка</span><span class="disc">−${fmt(r-s)}</span></div>
+  <div><span>Без НДС</span><span>${fmt(s/1.2)}</span></div><div><span>Итого с НДС 20%</span><b>${fmt(s)}</b></div>`}
+function kp(){const ids=Object.keys(sel);if(!ids.length){alert("Сначала отметьте товары");return}
+ const m=document.querySelector('input[name=m]:checked').value,no=++kpNo;let s=0,r=0;
+ const rows=ids.map((i,n)=>{const p=P[i],k=sel[i],price=m=="pp"?pp(p):p.retail;s+=price*k;r+=p.retail*k;
+  return `<tr><td>${n+1}</td><td><div class="ph" style="width:34px;height:34px;background:${COLORS[grp(p.g)]}">${p.art.slice(0,2)}</div></td><td>${p.name}<div class="art">${p.art} · ${p.ch}</div></td><td class="n">${k}</td><td class="n">${fmt(price)}</td><td class="n">${fmt(price*k)}</td></tr>`}).join("");
+ document.getElementById("sheet").innerHTML=`<button class="close" onclick="document.getElementById('kp').style.display='none'">Закрыть</button>
+  <h1>Коммерческое предложение № ${no}</h1><div class="meta">от ${new Date().toLocaleDateString("ru-RU")} · ${m=="pp"?"цены для партнёра":"розничные цены"} · действует 10 дней</div>
+  <table><thead><tr><th>№</th><th></th><th>Позиция</th><th class="n">Кол-во</th><th class="n">Цена</th><th class="n">Сумма</th></tr></thead><tbody>${rows}</tbody></table>
+  <div class="tot" style="max-width:300px;margin-left:auto"><div><span>Без НДС</span><span>${fmt(s/1.2)}</span></div><div><span>НДС 20%</span><span>${fmt(s-s/1.2)}</span></div><div><span>Итого</span><b>${fmt(s)}</b></div></div>
+  <p class="art">Условия: отгрузка со склада 1-2 дня, позиции «под заказ» 10-14 дней. Оплата по счёту.</p>
+  <p style="margin-top:40px">Менеджер ____________ / подпись</p>
+  <p class="note" style="padding:0">В рабочей версии это готовый PDF по вашему макету: обложка, фото позиций, страницы характеристик, сквозная нумерация и журнал КП.</p>`;
+ document.getElementById("kp").style.display="block";log("КП № "+no+" ("+(m=="pp"?"партнёр":"розница")+")")}
+function excel(what){const ids=what=="sel"?Object.keys(sel):P.map(p=>p.id);
+ const lines=[["Артикул","Товар","Наличие","Розница","Скидка %","Цена партнёра","Без НДС"].join(";")].concat(ids.map(i=>{const p=P[i];return [p.art,p.name,p.stock=="in"?"в наличии":"под заказ",p.retail,dOf(p),Math.round(pp(p)),Math.round(pp(p)/1.2)].join(";")}));
+ const a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["﻿"+lines.join("\n")],{type:"text/csv"}));a.download=what=="sel"?"podborka.csv":"price.csv";a.click();log("выгрузка: "+(what=="sel"?"подборка":"прайс"))}
+document.getElementById("roles").onclick=e=>{const r=e.target.dataset.r;if(!r)return;role=r;document.body.className="role-"+r;
+ [...e.currentTarget.children].forEach(b=>b.classList.toggle("on",b.dataset.r==r));
+ document.getElementById("who").textContent={p:"partner@example.ru",m:"manager@example.ru",a:"admin@example.ru"}[r];log("вход: "+{p:"партнёр",m:"менеджер",a:"администратор"}[r])};
+document.getElementById("admDisc").onchange=e=>{if(!group)return;disc[group]=+e.target.value;log("скидка «"+group+"» = "+e.target.value+"%");draw();tree()};
+document.querySelectorAll("th[data-s]").forEach(th=>th.onclick=()=>{dir=sort==th.dataset.s?-dir:1;sort=th.dataset.s;draw()});
+document.getElementById("q").oninput=draw;document.getElementById("stock").onchange=draw;
+tree();draw();log("вход: партнёр");
+</script>
+</body>
+</html>
