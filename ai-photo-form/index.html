@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Анкета с фото и ИИ</title>
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f4ef;--card:#fff;--line:#e4dfd4;--fg:#1d1b17;--mut:#7a7366;--acc:#3b5bdb;--acc2:#e8edff;--ok:#2f9e44}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 "Golos Text",system-ui,sans-serif}
+.wrap{max-width:760px;margin:0 auto;padding:28px 16px 60px}
+h1{font-size:28px;margin:0 0 6px;text-wrap:balance}.mut{color:var(--mut)}
+.note{background:#fff7e0;border:1px solid #f0dca0;color:#7a5b00;padding:8px 12px;border-radius:8px;font-size:13px;margin:14px 0 22px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px}
+.steps{display:flex;gap:6px;margin-bottom:16px}.steps i{flex:1;height:5px;border-radius:3px;background:var(--line)}.steps i.on{background:var(--acc)}
+h2{font-size:20px;margin:0 0 14px}
+.drop{border:2px dashed var(--line);border-radius:12px;padding:28px;text-align:center;cursor:pointer;color:var(--mut)}
+.drop:hover{border-color:var(--acc)}
+.thumbs{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.thumbs img{width:90px;height:90px;object-fit:cover;border-radius:8px}
+label.opt{display:block;border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:8px 0;cursor:pointer}
+label.opt:has(input:checked){border-color:var(--acc);background:var(--acc2)}
+textarea{width:100%;min-height:80px;border:1px solid var(--line);border-radius:10px;padding:10px;font:inherit;background:var(--card);color:var(--fg)}
+.q{margin-bottom:18px}.q b{display:block;margin-bottom:4px}
+.row{display:flex;gap:10px;justify-content:space-between;margin-top:18px}
+.btn{background:var(--acc);color:#fff;border:0;padding:12px 20px;border-radius:10px;cursor:pointer;font:inherit;font-weight:600}
+.btn.sec{background:transparent;color:var(--fg);border:1px solid var(--line)}
+.spin{width:38px;height:38px;border:4px solid var(--acc2);border-top-color:var(--acc);border-radius:50%;animation:s 1s linear infinite;margin:20px auto}
+@keyframes s{to{transform:rotate(360deg)}}
+.res{white-space:pre-wrap}.res h3{margin:14px 0 4px;font-size:16px}
+.how{margin-top:26px}.how ol{padding-left:20px}.how li{margin:6px 0}
+[hidden]{display:none!important}
+</style></head><body><div class="wrap">
+<h1>Получите разбор по фото за минуту</h1>
+<div class="mut">Прикрепите фото, ответьте на 3 вопроса - нейросеть обработает и пришлёт ответ</div>
+<div class="note">Прототип. Здесь ответ ИИ показан примером. В рабочей версии фото и ответы уходят в нейросеть с вашим промтом, и ответ пишет она.</div>
+
+<div class="card">
+<div class="steps"><i class="on"></i><i></i><i></i></div>
+
+<div id="s1"><h2>1. Фото</h2>
+<div class="drop" id="drop">Нажмите или перетащите фото сюда<br><small>JPG, PNG, до 3 штук</small></div>
+<input type="file" id="file" accept="image/*" multiple hidden>
+<div class="thumbs" id="thumbs"></div>
+<div class="row"><span></span><button class="btn" id="n1">Дальше</button></div></div>
+
+<div id="s2" hidden><h2>2. Пара вопросов</h2>
+<div class="q"><b>Что хотите получить?</b>
+<label class="opt"><input type="radio" name="goal" value="Оценка и рекомендации" checked> Оценка и рекомендации</label>
+<label class="opt"><input type="radio" name="goal" value="Подбор вариантов"> Подбор вариантов</label>
+<label class="opt"><input type="radio" name="goal" value="Расчёт стоимости"> Расчёт стоимости</label></div>
+<div class="q"><b>Насколько срочно?</b>
+<label class="opt"><input type="radio" name="urg" value="Сегодня"> Сегодня</label>
+<label class="opt"><input type="radio" name="urg" value="На этой неделе" checked> На этой неделе</label></div>
+<div class="q"><b>Что важно учесть?</b><textarea id="note" placeholder="Пару слов своими словами"></textarea></div>
+<div class="row"><button class="btn sec" id="b2">Назад</button><button class="btn" id="n2">Получить ответ</button></div></div>
+
+<div id="s3" hidden><h2>3. Ответ</h2>
+<div id="wait"><div class="spin"></div><p class="mut" style="text-align:center">Нейросеть смотрит фото и ответы…</p></div>
+<div id="out" class="res" hidden></div>
+<div class="row" id="r3" hidden><button class="btn sec" id="again">Заново</button><button class="btn" id="lead">Оставить контакт</button></div></div>
+</div>
+
+<div class="how card"><h2>Как это устроено</h2><ol>
+<li>Страница на вашем сайте в вашем стиле: загрузка фото и вопросы, которые вы зададите.</li>
+<li>Фото и ответы уходят на сервер, там к ним добавляется ваш промт.</li>
+<li>Нейросеть, которая умеет смотреть фото, пишет ответ - человек видит его сразу на странице.</li>
+<li>Копия заявки с фото и ответом ИИ приходит вам в Telegram или на почту.</li>
+<li>Ключ от нейросети хранится только на сервере, в коде страницы его не видно.</li>
+</ol></div>
+</div>
+<script>
+const $=s=>document.querySelector(s);let photos=0;
+const go=n=>{['s1','s2','s3'].forEach((id,i)=>$('#'+id).hidden=i!==n-1);document.querySelectorAll('.steps i').forEach((x,i)=>x.classList.toggle('on',i<n))};
+$('#drop').onclick=()=>$('#file').click();
+const addFiles=fs=>[...fs].slice(0,3).forEach(f=>{const r=new FileReader();r.onload=e=>{const im=new Image();im.src=e.target.result;$('#thumbs').appendChild(im);photos++};r.readAsDataURL(f)});
+$('#file').onchange=e=>addFiles(e.target.files);
+$('#drop').ondragover=e=>e.preventDefault();$('#drop').ondrop=e=>{e.preventDefault();addFiles(e.dataTransfer.files)};
+$('#n1').onclick=()=>go(2);$('#b2').onclick=()=>go(1);
+$('#n2').onclick=()=>{go(3);$('#wait').hidden=false;$('#out').hidden=true;$('#r3').hidden=true;
+ const g=document.querySelector('[name=goal]:checked').value,u=document.querySelector('[name=urg]:checked').value,n=$('#note').value.trim();
+ setTimeout(()=>{$('#wait').hidden=true;$('#out').hidden=false;$('#r3').hidden=false;
+  $('#out').innerHTML=`<b>Пример ответа ИИ</b> <span class="mut">(в рабочей версии - по вашему промту)</span>
+<h3>Что видно на фото</h3>Получено фото: ${photos||'не прикреплено'}. Здесь нейросеть описывает, что она увидела.
+<h3>${g}</h3>Здесь - главный вывод и 2-3 конкретных совета под запрос.${n?`\nУчтено ваше пожелание: «${n.replace(/</g,'&lt;')}».`:''}
+<h3>Следующий шаг</h3>Срок: ${u.toLowerCase()}. Оставьте контакт - специалист уточнит детали.`},1800)};
+$('#again').onclick=()=>{$('#thumbs').innerHTML='';photos=0;$('#note').value='';go(1)};
+$('#lead').onclick=()=>{$('#lead').textContent='Заявка отправлена ✅';$('#lead').disabled=true};
+</script></body></html>
