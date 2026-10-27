@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Контент-завод - пульт</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f1115;--card:#171a21;--line:#262b36;--fg:#e9ecf2;--mut:#8b93a5;--acc:#ff5a36;--ok:#3ddc97;--warn:#ffc547;color-scheme:dark}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 Manrope,system-ui,sans-serif}
+.wrap{max-width:1180px;margin:0 auto;padding:24px 16px 60px}
+h1{font-size:28px;margin:0 0 4px}h2{font-size:18px;margin:0 0 12px}.mut{color:var(--mut)}
+.note{background:#2a2213;border:1px solid #4a3a17;color:var(--warn);padding:8px 12px;border-radius:8px;font-size:13px;margin:12px 0 20px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}.tabs button{background:var(--card);color:var(--fg);border:1px solid var(--line);padding:9px 14px;border-radius:8px;cursor:pointer;font:inherit}
+.tabs button.on{background:var(--acc);border-color:var(--acc);color:#fff}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;min-width:0}
+.grid{display:grid;gap:14px}.g2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}.g4{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.flow{display:flex;flex-wrap:wrap;gap:10px}
+.step{flex:1 1 150px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;cursor:pointer}
+.step b{display:block;font-size:13px;color:var(--acc)}.step.on{border-color:var(--acc)}
+.detail{margin-top:14px}
+table{width:100%;border-collapse:collapse;font-size:14px}td,th{padding:8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{color:var(--mut);font-weight:600}
+.pill{display:inline-block;padding:2px 8px;border-radius:20px;font-size:12px;background:#222837}.p-ok{color:var(--ok)}.p-w{color:var(--warn)}
+.big{font-size:30px;font-weight:800;font-variant-numeric:tabular-nums}
+.chat{background:#11141a;border-radius:10px;padding:12px;min-height:180px;display:flex;flex-direction:column;gap:8px}
+.msg{max-width:85%;padding:8px 12px;border-radius:12px;font-size:14px}.me{align-self:flex-end;background:var(--acc);color:#fff}.bot{background:#232838}
+input{background:#11141a;border:1px solid var(--line);color:var(--fg);padding:9px;border-radius:8px;font:inherit;min-width:0}
+.btn{background:var(--acc);color:#fff;border:0;padding:9px 14px;border-radius:8px;cursor:pointer;font:inherit}
+.bar{height:8px;background:#222837;border-radius:4px;overflow:hidden}.bar i{display:block;height:100%;background:var(--acc)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.script{white-space:pre-wrap;background:#11141a;padding:12px;border-radius:8px;font-size:14px}
+[hidden]{display:none!important}
+</style></head><body><div class="wrap">
+<h1>Контент-завод на ИИ</h1>
+<div class="mut">Прототип пульта: как темы превращаются в ролики, ролики - в подписчиков, подписчики - в заявки</div>
+<div class="note">Демо-версия. Все цифры, темы и заявки ниже - пример для показа, не реальная статистика.</div>
+<div class="tabs" id="tabs">
+<button data-t="scheme" class="on">Схема завода</button><button data-t="plan">План роликов</button><button data-t="video">Карточка ролика</button><button data-t="lead">Кодовое слово → заявка</button><button data-t="stats">Аналитика</button><button data-t="launch">Запуск</button>
+</div>
+
+<section id="scheme">
+<div class="flow" id="flow"></div>
+<div class="card detail" id="flowDetail"></div>
+</section>
+
+<section id="plan" hidden><div class="card">
+<div class="row" style="justify-content:space-between"><h2>Неделя публикаций</h2><span class="mut">3 ролика в день на 4 площадки</span></div>
+<div style="overflow-x:auto"><table id="planT"><tr><th>День</th><th>Тема</th><th>Формат</th><th>Площадки</th><th>Статус</th></tr></table></div>
+</div></section>
+
+<section id="video" hidden><div class="grid g2">
+<div class="card"><h2>Ролик: «3 ошибки новичков»</h2>
+<div class="mut" style="margin-bottom:8px">Сценарий собирает ИИ по структуре, которая уже набирала просмотры в нише</div>
+<div class="script">0-2 с   ХУК: «Вы теряете клиентов на первой же фразе»
+2-15 с  Три ошибки, каждая с примером
+15-25 с Как сделать правильно
+25-30 с Призыв: «Напишите ГАЙД в комментариях - пришлю разбор»</div></div>
+<div class="card"><h2>Что делает завод</h2><table>
+<tr><td>Тема</td><td><span class="pill p-ok">из трендов ниши</span></td></tr>
+<tr><td>Сценарий</td><td><span class="pill p-ok">готов</span></td></tr>
+<tr><td>Озвучка / ИИ-ведущий</td><td><span class="pill p-ok">готово</span></td></tr>
+<tr><td>Монтаж, субтитры, обложка</td><td><span class="pill p-ok">готово</span></td></tr>
+<tr><td>Публикация</td><td><span class="pill p-w">по расписанию, 18:30</span></td></tr>
+<tr><td>Кодовое слово</td><td>ГАЙД → бот → заявка</td></tr></table></div>
+</div></section>
+
+<section id="lead" hidden><div class="grid g2">
+<div class="card"><h2>Попробуйте сами</h2><div class="mut" style="margin-bottom:10px">Напишите комментарий под роликом, как подписчик</div>
+<div class="row"><input id="cIn" placeholder="например: ГАЙД" style="flex:1"><button class="btn" id="cBtn">Отправить</button></div>
+<div class="chat" id="chat" style="margin-top:12px"><div class="msg bot">Бот ждёт кодовое слово…</div></div></div>
+<div class="card"><h2>Заявки</h2><div style="overflow-x:auto"><table id="leadsT"></table></div></div>
+</div></section>
+
+<section id="stats" hidden>
+<div class="grid g4" id="kpi"></div>
+<div class="card" style="margin-top:14px"><h2>Какие темы заходят (завод делает больше таких)</h2><div id="topics"></div></div>
+</section>
+
+<section id="launch" hidden><div class="card"><h2>Как запускаем</h2><div style="overflow-x:auto"><table>
+<tr><th>Неделя</th><th>Что делаем</th><th>Что получаете</th></tr>
+<tr><td>1</td><td>Разбор ниши и конкурентов, стиль, ведущий, 30 тем</td><td>Утверждённый стиль и первые 5 роликов</td></tr>
+<tr><td>2</td><td>Конвейер сценариев и роликов, автопубликация</td><td>Ролики выходят каждый день без вашего участия</td></tr>
+<tr><td>3</td><td>Кодовое слово, бот, заявки в таблицу или CRM, аналитика</td><td>Заявки приходят сами, видно что работает</td></tr>
+</table></div></div></section>
+</div>
+<script>
+const $=s=>document.querySelector(s);
+document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#tabs button').forEach(x=>x.classList.toggle('on',x===b));
+ document.querySelectorAll('section').forEach(s=>s.hidden=s.id!==b.dataset.t)});
+const steps=[["1","Анализ ниши","ИИ каждый день смотрит, какие ролики у конкурентов и в нише набирают просмотры, и выписывает темы и хуки, которые сейчас работают."],
+["2","Темы и сценарии","Из удачных тем собираются сценарии под ваш голос и продукт: хук в первые 2 секунды, польза, призыв с кодовым словом."],
+["3","Производство","Озвучка, ИИ-ведущий или нарезка, субтитры, обложка. Один сценарий - ролик сразу под Reels, Shorts, TikTok, VK Клипы."],
+["4","Публикация","Ролики выходят по расписанию в лучшее время каждой площадки. Вы только смотрите и при желании правите."],
+["5","Кодовое слово","Человек пишет слово в комментариях - бот отвечает в личку, отдаёт обещанное и берёт контакт."],
+["6","Заявки и аналитика","Контакты падают в таблицу или CRM. Завод видит, какие темы дали подписчиков и заявки, и делает больше таких."]];
+$('#flow').innerHTML=steps.map((s,i)=>`<div class="step" data-i="${i}"><b>Шаг ${s[0]}</b>${s[1]}</div>`).join('');
+const showStep=i=>{$('#flowDetail').innerHTML=`<h2>${steps[i][1]}</h2>${steps[i][2]}`;document.querySelectorAll('.step').forEach(x=>x.classList.toggle('on',+x.dataset.i===i))};
+document.querySelectorAll('.step').forEach(x=>x.onclick=()=>showStep(+x.dataset.i));showStep(0);
+const days=["Пн","Вт","Ср","Чт","Пт","Сб","Вс"],themes=["3 ошибки новичков","Разбор кейса подписчика","Миф и правда","Пошаговая инструкция","Ответ на частый вопрос","До и после","Подборка инструментов"],fm=["ИИ-ведущий","Нарезка + субтитры","Озвучка + графика"];
+$('#planT').innerHTML+=days.map((d,i)=>`<tr><td>${d}</td><td>${themes[i]}</td><td>${fm[i%3]}</td><td>Reels · Shorts · TikTok · VK</td><td><span class="pill ${i<3?'p-ok':'p-w'}">${i<3?'опубликован':'в очереди'}</span></td></tr>`).join('');
+const leads=[["@anna_k","3 ошибки новичков","+7 9•• •• 12","новая"],["@dmitry.pro","Миф и правда","Telegram","в работе"]];
+const drawLeads=()=>$('#leadsT').innerHTML='<tr><th>Кто</th><th>Ролик</th><th>Контакт</th><th>Статус</th></tr>'+leads.map(l=>`<tr><td>${l[0]}</td><td>${l[1]}</td><td>${l[2]}</td><td><span class="pill ${l[3]=='новая'?'p-w':'p-ok'}">${l[3]}</span></td></tr>`).join('');drawLeads();
+const add=(t,c)=>{const m=document.createElement('div');m.className='msg '+c;m.textContent=t;$('#chat').appendChild(m)};
+$('#cBtn').onclick=()=>{const v=$('#cIn').value.trim();if(!v)return;add(v,'me');$('#cIn').value='';
+ if(/гайд/i.test(v)){setTimeout(()=>add('Привет! Лови разбор 👉 (ссылка). Куда удобнее прислать подборку - Telegram или WhatsApp?','bot'),600);
+  setTimeout(()=>{add('Telegram, @you','me');leads.unshift(["@вы","3 ошибки новичков","Telegram","новая"]);drawLeads()},1600);
+  setTimeout(()=>add('Готово! Заявка уже у менеджера ✅','bot'),2200)}
+ else setTimeout(()=>add('Это слово не кодовое - бот промолчит. Попробуйте «ГАЙД»','bot'),600)};
+$('#cIn').onkeydown=e=>{if(e.key==='Enter')$('#cBtn').click()};
+$('#kpi').innerHTML=[["Роликов за месяц","84"],["Просмотров","412 000"],["Новых подписчиков","3 150"],["Заявок по кодовому слову","96"]].map(k=>`<div class="card"><div class="mut">${k[0]}</div><div class="big">${k[1]}</div><div class="mut" style="font-size:12px">пример</div></div>`).join('');
+$('#topics').innerHTML=[["Разбор кейса подписчика",92],["3 ошибки новичков",78],["До и после",64],["Миф и правда",41],["Подборка инструментов",22]].map(t=>`<div style="margin:10px 0"><div class="row" style="justify-content:space-between"><span>${t[0]}</span><span class="mut">${t[1]}%</span></div><div class="bar"><i style="width:${t[1]}%"></i></div></div>`).join('');
+</script></body></html>
